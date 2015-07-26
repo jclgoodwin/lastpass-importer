@@ -22,6 +22,7 @@
 
 # Parse flags
 require 'optparse'
+require 'uri'
 optparse = OptionParser.new do |opts|
   opts.banner = "Usage: #{$0} [options] filename"
 
@@ -101,6 +102,10 @@ entries.each do |e|
   grouping = args.pop
   grouping = DEFAULT_GROUP if grouping.empty?
   name = args.pop
+  if name.empty?
+    uri = URI(url)
+    name = uri.host
+  end
   extra = args.join(",")[1...-1]
   
   records << Record.new(name, url, username, password, extra, grouping, fav)
